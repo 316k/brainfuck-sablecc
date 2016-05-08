@@ -1,0 +1,48 @@
+Package bf;
+
+Helpers
+  all 	= 	[ 0 .. 127 ];
+  tab   = 9;
+  cr    = 13;
+  lf    = 10;
+  space = ' ';
+  eol   = cr | lf | cr lf;
+  else  = [ all - [ '+' + [ '-' +
+                  [ '<' + [ '>' +
+                  [ '[' + [ ']' +
+                  [ '.' + ',' ] ] ] ] ] ] ] ];
+
+Tokens
+  ignored = space | tab | eol | else;
+  inc     = '+';
+  dec     = '-';
+  left    = '<';
+  right   = '>';
+  lopen   = '[';
+  lclose  = ']';
+  print   = '.';
+  read    = ',';
+
+Ignored Tokens
+  ignored;
+
+Productions
+start =
+    {start} prog;
+
+prog =
+    {first} prog instr
+|   {end} instr;
+
+instr =
+    {inc} inc
+|   {dec} dec
+|   {left} left
+|   {right} right
+|   {loop} loop
+|   {print} print
+|   {read} read;
+
+loop =
+    {loop} lopen prog lclose
+|   {empty} lopen lclose;
